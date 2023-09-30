@@ -5,6 +5,7 @@ Parser::Parser() {
     operator_priority['-'] = 1;
     operator_priority['*'] = 2;
     operator_priority['/'] = 2;
+    operator_priority['u'] = 3;
 }
 
 vector<string> Parser::parse(const string& expression) {
@@ -24,19 +25,18 @@ vector<string> Parser::parse(const string& expression) {
         else if (expression[i] == '(') {
             operators.push('(');
         }
-        else if (expression[i] == ')') {
-            while (!operators.empty() && operators.top() != '(') {
-                rpn.push_back(string(1, operators.top()));
-                operators.pop();
-            }
-            operators.pop();
-        }
         else if (operator_priority.find(expression[i]) != operator_priority.end()) {
-            while (!operators.empty() && operator_priority[operators.top()] >= operator_priority[expression[i]]) {
-                rpn.push_back(string(1, operators.top()));
-                operators.pop();
+            if (expression[i] == '-' && (i == 0 || expression[i - 1] == '(' || operator_priority.find(expression[i - 1]) != operator_priority.end())) {
+                operators.push('u');
             }
-            operators.push(expression[i]);
+            else {
+
+                while (!operators.empty() && operator_priority[operators.top()] >= operator_priority[expression[i]]) {
+                    rpn.push_back(string(1, operators.top()));
+                    operators.pop();
+                }
+                operators.push(expression[i]);
+            }
         }
     }
 
