@@ -12,7 +12,7 @@ endif()
 project ("Calc")
 
 # Добавьте источник в исполняемый файл этого проекта.
-add_executable (Calc "main.cpp" "evaluator.cpp" "calculator.cpp" "calculator.h" "evaluator.h" "parser.h" "parser.cpp" )
+add_executable (Calc "main.cpp" "evaluator.cpp" "calculator.cpp" "calculator.h" "evaluator.h" "parser.h" "parser.cpp"  "validator.cpp" "validator.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Calc PROPERTY CXX_STANDARD 20)

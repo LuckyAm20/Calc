@@ -1,6 +1,7 @@
 #pragma once
 #include "evaluator.h"
 #include "parser.h"
+#include "validator.h"
 
 using namespace std;
 class Calculator {
@@ -10,4 +11,5 @@ public:
 private:
     Parser parser;
     Evaluator evaluator;
+    Validator validator;
 };
