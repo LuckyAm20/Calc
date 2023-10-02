@@ -35,18 +35,15 @@ void Validator::validate(const string& expression) {
             last_c = c;
         }
         else if (operator_priority.find(c) != operator_priority.end()) {
-            if (last_c == c && c != '-' || c == '-' && last_c == 'm') {
+            if (last_c == c && c != '-') {
                 throw User_Exept("Недопустимое выражение: " + string(1, c) + c);
             }
             else if ((last_c == '(' || last_c != '\0') && c != '-') {
                 throw User_Exept("Недопустимое выражение: " + string(1, last_c) + c);
             }
-            if (c == '-' && (last_c == '(' || operator_priority.find(last_c) != operator_priority.end() || last_c == ' ')) {
-                last_c = 'm';
-            }
-            else {
-                last_c = c;
-            }
+            
+            last_c = c;
+            
         }
         else {
             throw User_Exept("Недопустимый символ: " + string(1, c));

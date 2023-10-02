@@ -5,7 +5,7 @@
 #include <functional>
 #include <sstream>
 #include <vector>
-using namespace std;
+using std::map, std::vector, std::string, std::stack, std::stringstream;
 
 class Parser {
 public:

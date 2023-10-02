@@ -3,7 +3,7 @@
 #include "parser.h"
 #include "validator.h"
 
-using namespace std;
+using std::vector, std::string, std::cerr, std::endl;
 class Calculator {
 public:
     double calculate(const string& expression);

@@ -6,7 +6,7 @@
 #include <functional>
 #include <sstream>
 #include <vector>
-using namespace std;
+using std::map, std::vector, std::string, std::runtime_error, std::stack;
 
 class Validator {
 public:
