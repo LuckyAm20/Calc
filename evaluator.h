@@ -6,7 +6,7 @@
 #include <functional>
 #include <sstream>
 #include <vector>
-using std::map, std::vector, std::string, std::stack, std::function, std::cerr, std::endl;
+using std::map, std::vector, std::string, std::stack, std::function, std::cerr, std::endl, std::stod;
 
 class Evaluator {
 public:

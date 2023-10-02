@@ -37,7 +37,9 @@ double Evaluator::evaluate(const vector<string>& rpn) {
 
     for (string token : rpn) {
         if (isdigit(token[0])) {
+            setlocale(LC_NUMERIC, "C");
             operands.push(stod(token));
+            setlocale(LC_NUMERIC, "");
         }
         else if (operator_priority.find(token[0]) != operator_priority.end()) {
             if (unary_op.find(token[0]) != unary_op.end())
