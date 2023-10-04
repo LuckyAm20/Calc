@@ -2,12 +2,8 @@
 
 
 Validator::Validator() {
-    operator_priority['+'] = 1;
-    operator_priority['-'] = 1;
-    operator_priority['*'] = 2;
-    operator_priority['/'] = 2;
-    func.push_back("sin");
-    func.push_back("sqrt");
+    operator_priority = calc_inf.set_op_priority();
+    func = calc_inf.set_func_names();
 
 }
 void Validator::validate(const string& expression) {
@@ -20,13 +16,13 @@ void Validator::validate(const string& expression) {
     for (char c : expression) {
         if (is_fract) {
             if (is_fract && (!isdigit(c) && last_c == '.'))
-                throw User_Exept("Незавершенное дробное число ");
+                throw runtime_error("Незавершенное дробное число ");
             if (!isdigit(c) && last_c == '\0' && c != '.') {
                 is_fract = false;
             }
             else if (c == '.')
             {
-                throw User_Exept("Некорректная запись числа ");
+                throw runtime_error("Некорректная запись числа ");
             }
         }
         if (is_func) 
@@ -39,7 +35,7 @@ void Validator::validate(const string& expression) {
             
             if (!isalpha(c) && std::find(func.begin(), func.end(), func_name) == func.end())
             {
-                throw User_Exept("Некорректная функция");
+                throw runtime_error("Некорректная функция");
 
             }
             else if (!isalpha(c) && std::find(func.begin(), func.end(), func_name) != func.end())
@@ -47,7 +43,7 @@ void Validator::validate(const string& expression) {
                 func_name = "";
                 is_func = false;
                 if (c != '(')
-                    throw User_Exept("Не хватает (");
+                    throw runtime_error("Не хватает (");
             }
         
         }
@@ -67,49 +63,49 @@ void Validator::validate(const string& expression) {
                 is_fract = true;
             }
             else
-                throw User_Exept("Некорректная запись числа ");
+                throw runtime_error("Некорректная запись числа ");
         }
         else if (c == '(') {
             if (last_c == '\0' || last_c == ')') {
-                throw User_Exept("Недопустимое выражение: " + string(1, last_c) + c);
+                throw runtime_error("Недопустимое выражение: " + string(1, last_c) + c);
             }
             brackets.push(c);
             last_c = c;
         }
         else if (c == ')') {
             if (brackets.empty() || brackets.top() != '(') {
-                throw User_Exept("Несбалансированные скобки");
+                throw runtime_error("Несбалансированные скобки");
             }
             else if (last_c == '(')
             {
-                throw User_Exept("Недостаточно данных");
+                throw runtime_error("Недостаточно данных");
             }
             brackets.pop();
             last_c = c;
         }
         else if (operator_priority.find(c) != operator_priority.end()) {
             if (last_c == c && c != '-') {
-                throw User_Exept("Недопустимое выражение: " + string(1, c) + c);
+                throw runtime_error("Недопустимое выражение: " + string(1, c) + c);
             }
             else if ((last_c == '(' || last_c != '\0') && c != '-' && last_c != ')') {
-                throw User_Exept("Недопустимое выражение: " + string(1, last_c) + c);
+                throw runtime_error("Недопустимое выражение: " + string(1, last_c) + c);
             }
             is_fract = false;
             last_c = c;
             
         }
         else {
-            throw User_Exept("Недопустимый символ: " + string(1, c));
+            throw runtime_error("Недопустимый символ: " + string(1, c));
         }
     }
 
     if (!brackets.empty())
-        throw User_Exept("Несбалансированные скобки");
+        throw runtime_error("Несбалансированные скобки");
 
     if (last_c != '\0' && last_c != ')')
-        throw User_Exept("Недостаточно данных");
+        throw runtime_error("Недостаточно данных");
 
     if (is_fract && last_c != '\0')
-        throw User_Exept("Незавершенное дробное число");
+        throw runtime_error("Незавершенное дробное число");
     
 }

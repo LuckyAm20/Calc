@@ -3,18 +3,10 @@
 
 Evaluator::Evaluator() 
 {
-    operators['+'] = [](double a, double b) { return a + b; };
-    operators['-'] = [](double a, double b) { return a - b; };
-    operators['*'] = [](double a, double b) { return a * b; };
-    operators['/'] = [](double a, double b) { return a / b; };
-    unary_op['u'] = [](double a) { return -a; };
-    operator_priority['+'] = 1;
-    operator_priority['-'] = 1;
-    operator_priority['*'] = 2;
-    operator_priority['/'] = 2;
-    operator_priority['u'] = 3;
-    functions["sin"] = [](double a) { return sin(a); };
-    functions["sqrt"] = [](double a) { return sqrt(a); };
+    operators = calc_inf.set_operators();
+    unary_op = calc_inf.set_un_op();
+    operator_priority = calc_inf.set_op_priority();
+    functions = calc_inf.set_functions();
 }
 
 double Evaluator::apply_op(char op, double operand1, double operand2) {

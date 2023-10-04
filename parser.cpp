@@ -1,13 +1,5 @@
 #include "parser.h"
 
-Parser::Parser() {
-    operator_priority["+"] = 1;
-    operator_priority["-"] = 1;
-    operator_priority["*"] = 2;
-    operator_priority["/"] = 2;
-    operator_priority["u"] = 3;
-}
-
 vector<string> Parser::parse(const string& expression) {
     vector<string> rpn;
     stack<string> operators;
@@ -38,12 +30,12 @@ vector<string> Parser::parse(const string& expression) {
                 operators.pop();
             }
         }
-        else if (operator_priority.find(string(1, expression[i])) != operator_priority.end()) {
-            if (expression[i] == '-' && (i == 0 || expression[i - 1] == '(' || operator_priority.find(string(1, expression[i-1])) != operator_priority.end())) {
+        else if (operator_priority.find(expression[i]) != operator_priority.end()) {
+            if (expression[i] == '-' && (i == 0 || expression[i - 1] == '(' || operator_priority.find(expression[i-1]) != operator_priority.end())) {
                 operators.push("u");
             }
             else {
-                while (!operators.empty() && operator_priority[operators.top()] >= operator_priority[string(1, expression[i])]) {
+                while (!operators.empty() && operator_priority[operators.top()[0]] >= operator_priority[expression[i]]) {
                     rpn.push_back(operators.top());
                     operators.pop();
                 }

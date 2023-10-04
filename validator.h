@@ -6,6 +6,7 @@
 #include <functional>
 #include <sstream>
 #include <vector>
+#include "inf_for_calc.h"
 using std::map, std::vector, std::string, std::runtime_error, std::stack;
 
 class Validator {
@@ -16,9 +17,5 @@ private:
     map<char, int> operator_priority;
     vector<string> unary_op;
     vector<string> func;
-};
-
-class User_Exept : public runtime_error {
-public:
-    User_Exept(const string& message) : runtime_error(message) {}
+    Calc_Inf calc_inf;
 };

@@ -4,7 +4,7 @@ double Calculator::calculate(const string& expression) {
     try {
         validator.validate(del_spaces(expression));
     }
-    catch (const User_Exept& e) {
+    catch (const runtime_error& e) {
         cerr << "Îøèáêà: " << e.what() << endl;
         exit(1);
     }

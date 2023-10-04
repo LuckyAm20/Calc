@@ -6,6 +6,7 @@
 #include <functional>
 #include <sstream>
 #include <vector>
+#include "inf_for_calc.h"
 using std::map, std::vector, std::string, std::stack, std::function, std::cerr, std::endl, std::stod;
 
 class Evaluator {
@@ -21,4 +22,5 @@ private:
     double apply_op(char op, double operand1, double operand2);
     double apply_op(char op, double operand1);
     double apply_op(string op, double operand1);
+    Calc_Inf calc_inf;
 };
