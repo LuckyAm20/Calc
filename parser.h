@@ -13,5 +13,5 @@ public:
     vector<string> parse(const string& expression);
 
 private:
-    map<char, int> operator_priority;
+    map<string, int> operator_priority;
 };

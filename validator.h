@@ -15,6 +15,7 @@ public:
 private:
     map<char, int> operator_priority;
     vector<string> unary_op;
+    vector<string> func;
 };
 
 class User_Exept : public runtime_error {

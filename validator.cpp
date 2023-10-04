@@ -6,12 +6,16 @@ Validator::Validator() {
     operator_priority['-'] = 1;
     operator_priority['*'] = 2;
     operator_priority['/'] = 2;
+    func.push_back("sin");
+    func.push_back("sqrt");
 
 }
 void Validator::validate(const string& expression) {
     stack<char> brackets;
     char last_c = ' ';
+    bool is_func = false;
     bool is_fract = false;
+    string func_name = "";
 
     for (char c : expression) {
         if (is_fract) {
@@ -25,8 +29,35 @@ void Validator::validate(const string& expression) {
                 throw User_Exept("Некорректная запись числа ");
             }
         }
+        if (is_func) 
+        {
+            if (isalpha(c))
+            {
+                func_name += c;
+                continue;
+            }
+            
+            if (!isalpha(c) && std::find(func.begin(), func.end(), func_name) == func.end())
+            {
+                throw User_Exept("Некорректная функция");
+
+            }
+            else if (!isalpha(c) && std::find(func.begin(), func.end(), func_name) != func.end())
+            {
+                func_name = "";
+                is_func = false;
+                if (c != '(')
+                    throw User_Exept("Не хватает (");
+            }
+        
+        }
         if (isdigit(c)) {
             last_c = '\0';
+        }
+        else if (isalpha(c) && (operator_priority.find(last_c) != operator_priority.end() && c != 'u' || last_c == '(' || last_c == ' '))
+        {
+            is_func = true;
+            func_name += c;
         }
         else if (c == '.')
         {

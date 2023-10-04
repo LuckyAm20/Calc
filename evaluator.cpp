@@ -13,6 +13,8 @@ Evaluator::Evaluator()
     operator_priority['*'] = 2;
     operator_priority['/'] = 2;
     operator_priority['u'] = 3;
+    functions["sin"] = [](double a) { return sin(a); };
+    functions["sqrt"] = [](double a) { return sqrt(a); };
 }
 
 double Evaluator::apply_op(char op, double operand1, double operand2) {
@@ -31,7 +33,11 @@ double Evaluator::apply_op(char op, double operand1) {
     cerr << "Ошибка: неизвестный оператор " << op << endl;
     exit(1);
 }
-
+double Evaluator::apply_op(string op, double operand1) {
+     
+    return functions[op](operand1);
+    
+}
 double Evaluator::evaluate(const vector<string>& rpn) {
     stack<double> operands;
 
@@ -59,6 +65,14 @@ double Evaluator::evaluate(const vector<string>& rpn) {
                 operands.push(result);
             }
         }
+        else if (functions.find(token) != functions.end())
+        {
+            double operand = operands.top();
+            operands.pop();
+            double result = apply_op(token, operand);
+            operands.push(result);
+        }
+        
     }
 
     return operands.top();
