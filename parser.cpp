@@ -24,7 +24,7 @@ vector<string> Parser::parse(const string& expression) {
                 operators.pop();
             }
             operators.pop();
-            if (isalpha(operators.top()[0]))
+            if (!operators.empty() && isalpha(operators.top()[0]))
             {
                 rpn.push_back(operators.top());
                 operators.pop();

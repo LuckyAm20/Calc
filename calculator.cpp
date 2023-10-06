@@ -1,16 +1,27 @@
 #include "calculator.h"
 
 double Calculator::calculate(const string& expression) {
-    try {
+    try 
+    {
         validator.validate(del_spaces(expression));
     }
-    catch (const runtime_error& e) {
+    catch (const runtime_error& e)
+    {
         cerr << "Îøèáêà: " << e.what() << endl;
         exit(1);
     }
     vector<string> rpn = parser.parse(del_spaces(expression));
-    double result = evaluator.evaluate(rpn);
-    return result;
+    try
+    {
+        double result = evaluator.evaluate(rpn);
+        return result;
+    }
+    catch (const std::exception& e)
+    {
+        cerr << "Îøèáêà: " << e.what() << endl;
+        exit(1);
+    }
+    
 }
 
 string Calculator::del_spaces(const string& expression)
