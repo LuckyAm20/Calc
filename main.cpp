@@ -1,10 +1,12 @@
 ﻿#include <iostream>
 #include "calculator.h"
 
-using namespace std;
+using std::cout, std::getline, std::cin, std::endl;
 
-int main() {
-    Calculator calculator;
+int main() 
+{
+    Calc_Inf calc_inf;
+    Calculator calculator(calc_inf);
     string expression;
     setlocale(LC_ALL, "ru");
     cout << "Введите выражение: ";

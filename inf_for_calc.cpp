@@ -1,6 +1,7 @@
 #include "inf_for_calc.h"
 
-Calc_Inf::Calc_Inf() {
+Calc_Inf::Calc_Inf() 
+{
 
     priority_op['+'] = 1;
     priority_op['-'] = 1;
@@ -67,9 +68,6 @@ void Calc_Inf::load_lib()
             }
         }
         else
-        {
             throw std::exception("Проблема с открытием dll");
-        }
     }
-
 }

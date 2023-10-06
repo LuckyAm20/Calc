@@ -9,7 +9,8 @@
 
 using std::map, std::string, std::vector, std::function, std::filesystem::directory_iterator, std::filesystem::path;
 
-class Calc_Inf {
+class Calc_Inf 
+{
 public:
     Calc_Inf(); 
     ~Calc_Inf(){ for (const auto& lib : libs) { FreeLibrary(lib); } }

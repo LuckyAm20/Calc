@@ -9,9 +9,10 @@
 #include "inf_for_calc.h"
 using std::map, std::vector, std::string, std::stack, std::function, std::cerr, std::endl, std::stod;
 
-class Evaluator {
+class Evaluator 
+{
 public:
-    Evaluator();
+    Evaluator(Calc_Inf& calc_inf_);
     double evaluate(const vector<string>& rpn);
 
 private:
@@ -22,5 +23,4 @@ private:
     double apply_op(char op, double operand1, double operand2);
     double apply_op(char op, double operand1);
     double apply_op(string op, double operand1);
-    Calc_Inf calc_inf;
 };
