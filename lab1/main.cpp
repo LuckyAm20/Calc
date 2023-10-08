@@ -4,6 +4,7 @@
 
 int main() 
 {
+    system("chcp 1251");
     Calc_Inf calc_inf;
     Calculator calculator(calc_inf);
     std::string expression;
