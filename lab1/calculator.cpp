@@ -1,18 +1,19 @@
 #include "calculator.h"
 
-double Calculator::calculate(const string& expression) 
+double Calculator::calculate(const std::string& expression)
 {
+    setlocale(LC_ALL, "ru");
     try 
     {
         validator.validate(del_spaces(expression));
     }
-    catch (const runtime_error& e)
+    catch (const std::runtime_error& e)
     {
-        cerr << "Îøèáêà: " << e.what() << endl;
+        std::cerr << "Îøèáêà: " << e.what() << std::endl;
         exit(1);
     }
 
-    vector<string> rpn = parser.parse(del_spaces(expression));
+    std::vector<std::string> rpn = parser.parse(del_spaces(expression));
 
     try
     {
@@ -21,15 +22,14 @@ double Calculator::calculate(const string& expression)
     }
     catch (const std::exception& e)
     {
-        cerr << "Îøèáêà: " << e.what() << endl;
+        std::cerr << "Îøèáêà: " << e.what() << std::endl;
         exit(1);
     }
-    
 }
 
-string Calculator::del_spaces(const string& expression)
+std::string Calculator::del_spaces(const std::string& expression)
 {
-    string s = "";
+    std::string s = "";
     for (int i = 0; i < expression.length(); i++)
         if (expression[i] != ' ')
             s += expression[i];

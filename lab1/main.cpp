@@ -1,20 +1,19 @@
 ﻿#include <iostream>
 #include "calculator.h"
 
-using std::cout, std::getline, std::cin, std::endl;
 
 int main() 
 {
     Calc_Inf calc_inf;
     Calculator calculator(calc_inf);
-    string expression;
+    std::string expression;
     setlocale(LC_ALL, "ru");
-    cout << "Введите выражение: ";
-    getline(cin, expression);
+    std::cout << "Введите выражение: ";
+    std::getline(std::cin, expression);
 
     double result = calculator.calculate(expression);
 
-    cout << "Результат вычислений: " << result << endl;
+    std::cout << "Результат вычислений: " << result << std::endl;
 
     return 0;
 }

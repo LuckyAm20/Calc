@@ -7,20 +7,19 @@
 #include <sstream>
 #include <vector>
 #include "inf_for_calc.h"
-using std::map, std::vector, std::string, std::stack, std::function, std::cerr, std::endl, std::stod;
 
 class Evaluator 
 {
 public:
     Evaluator(Calc_Inf& calc_inf_);
-    double evaluate(const vector<string>& rpn);
+    double evaluate(const std::vector<std::string>& rpn);
 
 private:
-    map<char, function<double(double, double)>> operators;
-    map<string, function<double(double)>> functions;
-    map<char, function<double(double)>> unary_op;
-    map<char, int> operator_priority;
+    std::map<char, std::function<double(double, double)>> operators;
+    std::map<std::string, std::function<double(double)>> functions;
+    std::map<char, std::function<double(double)>> unary_op;
+    std::map<char, int> operator_priority;
     double apply_op(char op, double operand1, double operand2);
     double apply_op(char op, double operand1);
-    double apply_op(string op, double operand1);
+    double apply_op(std::string op, double operand1);
 };

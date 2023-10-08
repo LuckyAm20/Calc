@@ -19,16 +19,16 @@ double Evaluator::apply_op(char op, double operand1)
     return unary_op[op](operand1);
 }
 
-double Evaluator::apply_op(string op, double operand1) 
+double Evaluator::apply_op(std::string op, double operand1)
 { 
     return functions[op](operand1);  
 }
 
-double Evaluator::evaluate(const vector<string>& rpn) 
+double Evaluator::evaluate(const std::vector<std::string>& rpn)
 {
-    stack<double> operands;
+    std::stack<double> operands;
 
-    for (string token : rpn)
+    for (std::string token : rpn)
     {
         if (isdigit(token[0])) 
         {

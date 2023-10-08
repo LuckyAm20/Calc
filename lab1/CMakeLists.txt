@@ -15,8 +15,16 @@ project ("Calc")
 add_executable (Calc "main.cpp" "evaluator.cpp" "calculator.cpp" "calculator.h" "evaluator.h" "parser.h" "parser.cpp"  "validator.cpp" "validator.h" "inf_for_calc.h" "inf_for_calc.cpp")
 
 
-configure_file(${PROJECT_SOURCE_DIR}/plugins/DLL_1.dll ${PROJECT_BINARY_DIR}/plugins/DLL_1.dll COPYONLY)
-configure_file(${PROJECT_SOURCE_DIR}/plugins/DLL_2.dll ${PROJECT_BINARY_DIR}/plugins/DLL_2.dll COPYONLY)
+add_custom_target(watch_plugins ALL)
+
+
+add_custom_command(
+    TARGET watch_plugins
+    COMMAND ${CMAKE_COMMAND} -E remove_directory ${CMAKE_BINARY_DIR}/plugins
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/plugins ${CMAKE_BINARY_DIR}/plugins
+)
+
+add_dependencies("Calc" watch_plugins)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET Calc PROPERTY CXX_STANDARD 20)

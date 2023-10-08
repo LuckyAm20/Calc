@@ -7,19 +7,20 @@ Calc_Inf::Calc_Inf()
     priority_op['-'] = 1;
     priority_op['*'] = 2;
     priority_op['/'] = 2;
-    priority_op['u'] = 3; // используйется для вычисления унарного минуса в evaluate не распознается парсером и не проходит проверку на корректность в validate
+    priority_op['u'] = 3; 
     operators['+'] = [](double a, double b) { return a + b; };
     operators['-'] = [](double a, double b) { return a - b; };
     operators['*'] = [](double a, double b) { return a * b; };
     operators['/'] = [](double a, double b) { if (b == 0) { throw std::exception("Деление на ноль!"); } return a / b; };
     unary_op['u'] = [](double a) { return -a; };
+    setlocale(LC_ALL, "ru");
     try
     {
-        load_lib(); // загрузка функций из dll
+        load_lib(); 
     }
     catch (const std::exception& e)
     {
-        setlocale(LC_ALL, "ru");
+        
         std::cerr << "Ошибка: " << e.what() << std::endl;
         exit(1);
     }
@@ -28,9 +29,9 @@ Calc_Inf::Calc_Inf()
 
 void Calc_Inf::load_lib()
 {
-    vector<path> files;
+    std::vector<std::filesystem::path> files;
 
-    for (const auto& name : directory_iterator("./plugins"))
+    for (const auto& name : std::filesystem::directory_iterator("plugins"))
     {
         if (name.path().extension() == ".dll")
             files.push_back(name.path().c_str());
@@ -49,21 +50,21 @@ void Calc_Inf::load_lib()
 
         if (load)
         {
-            function<string()> type = (string(*)())GetProcAddress(load, "name_type");
+            std::function<std::string()> type = (std::string(*)())GetProcAddress(load, "name_type");
 
             if (type() == "op")
             {
                 char* name_op = (char*)GetProcAddress(load, "name");
                 int* priority = (int*)GetProcAddress(load, "op_priority");
                 priority_op[*name_op] = *priority;
-                function<double(double, double)> func = (double (*) (double, double))GetProcAddress(load, "function");
+                std::function<double(double, double)> func = (double (*) (double, double))GetProcAddress(load, "function");
                 operators[*name_op] = func;
             }
             else if (type() == "func")
             {
-                function<string()> name_func = (string(*)())GetProcAddress(load, "name");
+                std::function<std::string()> name_func = (std::string(*)())GetProcAddress(load, "name");
                 functions_name.push_back(name_func());
-                function<double(double)> func = (double (*) (double))GetProcAddress(load, "function");
+                std::function<double(double)> func = (double (*) (double))GetProcAddress(load, "function");
                 functions[name_func()] = func;
             }
         }

@@ -1,15 +1,15 @@
 #include "parser.h"
 
-vector<string> Parser::parse(const string& expression) 
+std::vector<std::string> Parser::parse(const std::string& expression)
 {
-    vector<string> rpn;
-    stack<string> operators;
+    std::vector<std::string> rpn;
+    std::stack<std::string> operators;
 
     for (int i = 0; i < expression.length(); i++)
     {
         if (isdigit(expression[i]) || expression[i] == '.') 
         {
-            stringstream ss;
+            std::stringstream ss;
             while (i < expression.length() && (isdigit(expression[i]) || expression[i] == '.')) 
             {
                 ss << expression[i];
@@ -45,18 +45,18 @@ vector<string> Parser::parse(const string& expression)
                     rpn.push_back(operators.top());
                     operators.pop();
                 }
-                operators.push(string(1, expression[i]));
+                operators.push(std::string(1, expression[i]));
             }
         }
         else if (isalpha(expression[i])) 
         {
-            stringstream ss;
+            std::stringstream ss;
             while (i < expression.length() && isalpha(expression[i])) 
             {
                 ss << expression[i];
                 i++;
             }
-            string function_name = ss.str();
+            std::string function_name = ss.str();
             operators.push(function_name);
             i--; 
         }
