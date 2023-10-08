@@ -2,14 +2,13 @@
 
 double Calculator::calculate(const std::string& expression)
 {
-    setlocale(LC_ALL, "ru");
     try 
     {
         validator.validate(del_spaces(expression));
     }
     catch (const std::runtime_error& e)
     {
-        std::cerr << "Îøèáêà: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         exit(1);
     }
 
@@ -22,7 +21,7 @@ double Calculator::calculate(const std::string& expression)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Îøèáêà: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         exit(1);
     }
 }

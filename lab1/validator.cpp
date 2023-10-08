@@ -19,12 +19,12 @@ void Validator::validate(const std::string& expression)
         if (is_fract) 
         {
             if (is_fract && (!isdigit(c) && last_c == '.'))
-                throw std::runtime_error("Незавершенное дробное число ");
+                throw std::runtime_error("Incomplete fractional number ");
 
             if (!isdigit(c) && last_c == '\0' && c != '.') 
                 is_fract = false;
             else if (c == '.')
-                throw std::runtime_error("Некорректная запись числа ");
+                throw std::runtime_error("Incorrect number entry ");
         }
 
         if (is_func) 
@@ -36,13 +36,13 @@ void Validator::validate(const std::string& expression)
             }
             
             if (!isalpha(c) && std::find(func.begin(), func.end(), func_name) == func.end())
-                throw std::runtime_error("Некорректная функция");
+                throw std::runtime_error("Invalid function");
             else if (!isalpha(c) && std::find(func.begin(), func.end(), func_name) != func.end())
             {
                 func_name = "";
                 is_func = false;
                 if (c != '(')
-                    throw std::runtime_error("Не хватает (");
+                    throw std::runtime_error("Lack (");
             }
         }
 
@@ -61,21 +61,21 @@ void Validator::validate(const std::string& expression)
                 is_fract = true;
             }
             else
-                throw std::runtime_error("Некорректная запись числа ");
+                throw std::runtime_error("Incorrect number entry ");
         }
         else if (c == '(') 
         {
             if (last_c == '\0' || last_c == ')') 
-                throw std::runtime_error("Недопустимое выражение: " + std::string(1, last_c) + c);
+                throw std::runtime_error("Invalid expression: " + std::string(1, last_c) + c);
             brackets.push(c);
             last_c = c;
         }
         else if (c == ')') 
         {
             if (brackets.empty() || brackets.top() != '(') 
-                throw std::runtime_error("Несбалансированные скобки");
+                throw std::runtime_error("Unbalanced brackets");
             else if (last_c == '(')
-                throw std::runtime_error("Недостаточно данных");
+                throw std::runtime_error("Insufficient data");
 
             brackets.pop();
             last_c = c;
@@ -83,23 +83,23 @@ void Validator::validate(const std::string& expression)
         else if (operator_priority.find(c) != operator_priority.end()) 
         {
             if (last_c == c && c != '-') 
-                throw std::runtime_error("Недопустимое выражение: " + std::string(1, c) + c);
+                throw std::runtime_error("Invalid expression: " + std::string(1, c) + c);
             else if ((last_c == '(' || last_c != '\0') && c != '-' && last_c != ')') 
-                throw std::runtime_error("Недопустимое выражение: " + std::string(1, last_c) + c);
+                throw std::runtime_error("Invalid expression: " + std::string(1, last_c) + c);
 
             is_fract = false;
             last_c = c;  
         }
         else 
-            throw std::runtime_error("Недопустимый символ: " + std::string(1, c));
+            throw std::runtime_error("Invalid character: " + std::string(1, c));
     }
 
     if (!brackets.empty())
-        throw std::runtime_error("Несбалансированные скобки");
+        throw std::runtime_error("Unbalanced brackets");
 
     if (last_c != '\0' && last_c != ')')
-        throw std::runtime_error("Недостаточно данных");
+        throw std::runtime_error("Insufficient data");
 
     if (is_fract && last_c != '\0')
-        throw std::runtime_error("Незавершенное дробное число");
+        throw std::runtime_error("Incomplete fractional number");
 }

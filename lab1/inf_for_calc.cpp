@@ -13,15 +13,13 @@ Calc_Inf::Calc_Inf()
     operators['*'] = [](double a, double b) { return a * b; };
     operators['/'] = [](double a, double b) { if (b == 0) { throw std::exception("Деление на ноль!"); } return a / b; };
     unary_op['u'] = [](double a) { return -a; };
-    setlocale(LC_ALL, "ru");
     try
     {
         load_lib(); 
     }
     catch (const std::exception& e)
     {
-        
-        std::cerr << "Ошибка: " << e.what() << std::endl;
+        std::cerr << "Error: " << e.what() << std::endl;
         exit(1);
     }
 
@@ -38,7 +36,7 @@ void Calc_Inf::load_lib()
     }
 
     if (files.empty())
-        throw std::exception("Не найдено dll для подгрузки");
+        throw std::exception("No dll found for uploading");
 
     const wchar_t* file_name;
     HINSTANCE load;
@@ -69,6 +67,6 @@ void Calc_Inf::load_lib()
             }
         }
         else
-            throw std::exception("Проблема с открытием dll");
+            throw std::exception("Problem with opening dll");
     }
 }
