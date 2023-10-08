@@ -11,7 +11,7 @@ Calc_Inf::Calc_Inf()
     operators['+'] = [](double a, double b) { return a + b; };
     operators['-'] = [](double a, double b) { return a - b; };
     operators['*'] = [](double a, double b) { return a * b; };
-    operators['/'] = [](double a, double b) { if (b == 0) { throw std::exception("Деление на ноль!"); } return a / b; };
+    operators['/'] = [](double a, double b) { if (b == 0) { throw std::exception("Division by zero!"); } return a / b; };
     unary_op['u'] = [](double a) { return -a; };
     try
     {
@@ -20,7 +20,6 @@ Calc_Inf::Calc_Inf()
     catch (const std::exception& e)
     {
         std::cerr << "Error: " << e.what() << std::endl;
-        exit(1);
     }
 
 }
