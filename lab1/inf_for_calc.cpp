@@ -66,6 +66,6 @@ void Calc_Inf::load_lib()
             }
         }
         else
-            throw std::exception("Problem with opening dll");
+            std::cerr << "Problem with opening dll";
     }
 }
