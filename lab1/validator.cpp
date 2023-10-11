@@ -8,7 +8,7 @@ Validator::Validator(Calc_Inf& calc_inf_)
 }
 void Validator::validate(const std::string& expression)
 {
-    std::stack<char> brackets;
+    std::stack<unsigned char> brackets;
     char last_c = ' ';
     bool is_func = false;
     bool is_fract = false;
