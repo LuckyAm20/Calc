@@ -8,7 +8,7 @@ endif()
 
 project ("Calc")
 
-add_executable (Calc "main.cpp" "evaluator.cpp" "calculator.cpp" "calculator.h" "evaluator.h" "parser.h" "parser.cpp"  "validator.cpp" "validator.h" "inf_for_calc.h" "inf_for_calc.cpp")
+add_executable (Calc "main.cpp" "evaluator.cpp" "calculator.cpp" "calculator.h" "evaluator.h" "parser.h" "parser.cpp"  "validator.cpp" "validator.h" "inf_for_calc.h" "inf_for_calc.cpp" "operator.h")
 
 
 add_custom_target(watch_plugins ALL)
@@ -23,5 +23,5 @@ add_custom_command(
 add_dependencies("Calc" watch_plugins)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET Calc PROPERTY CXX_STANDARD 20)
+  set_property(TARGET Calc PROPERTY CXX_STANDARD 17)
 endif()

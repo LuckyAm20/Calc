@@ -1,4 +1,5 @@
 #include "inf_for_calc.h"
+#include "operator.h"
 
 Calc_Inf::Calc_Inf() 
 {
@@ -47,22 +48,22 @@ void Calc_Inf::load_lib()
 
         if (load)
         {
-            std::function<std::string()> type = (std::string(*)())GetProcAddress(load, "name_type");
-
-            if (type() == "op")
+            Operation* (*create)() = (Operation * (*)())GetProcAddress(load, "create_op");
+            Operation* operation = create();
+            
+            if (operation->type() == Type::op)
             {
-                char* name_op = (char*)GetProcAddress(load, "name");
-                int* priority = (int*)GetProcAddress(load, "op_priority");
-                priority_op[*name_op] = *priority;
-                std::function<double(double, double)> func = (double (*) (double, double))GetProcAddress(load, "function");
-                operators[*name_op] = func;
+                char name = operation->name()[0];
+                priority_op[name] = operation->priority();
+                std::function<double(double, double)> func = operation->get_pointer_bin();
+                operators[name] = func;
             }
-            else if (type() == "func")
+            else if (operation->type() == Type::func)
             {
-                std::function<std::string()> name_func = (std::string(*)())GetProcAddress(load, "name");
-                functions_name.push_back(name_func());
-                std::function<double(double)> func = (double (*) (double))GetProcAddress(load, "function");
-                functions[name_func()] = func;
+                std::string name_func = operation->name();
+                functions_name.push_back(name_func);
+                std::function<double(double)> func = operation->get_pointer_un();
+                functions[name_func] = func;
             }
         }
         else

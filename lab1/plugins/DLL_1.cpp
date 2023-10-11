@@ -1,11 +1,38 @@
 #include <cmath>
 #include <string>
-using std::string;
+#include <functional>
 
-extern "C"
-{
-	__declspec(dllexport) int op_priority = 3;
-	__declspec(dllexport) char name = '^';
-	__declspec(dllexport) double function(double a, double b) { if (a < 0 && b - (int)b != 0) { throw std::exception("You cannot raise a negative number to a fractional power!"); } return pow(a, b); }
-	__declspec(dllexport) string name_type() { return "op"; }
+
+enum class Type {
+    op,
+    func
+};
+
+class Operation {
+public:
+    virtual std::string name() = 0;
+    virtual int priority() = 0;
+    virtual double function(double a, double b) = 0;
+    virtual double function(double a) = 0;
+    virtual std::function<double(double)> get_pointer_un() = 0;
+    virtual std::function<double(double, double)> get_pointer_bin() = 0;
+    virtual Type type() = 0;
+};
+
+
+class MathFunction : public Operation {
+public:
+    std::string name() override { return "sqrt"; }
+    double function(double a) override { return sqrt(a); }
+    double function(double a, double b) override { return 0; }
+    int priority() override { return 0; }
+    std::function<double(double, double)> get_pointer_bin() override { return [this](double a, double b) { return function(a, b); }; }
+    std::function<double(double)> get_pointer_un() override { return [this](double a) { return function(a); };}
+    Type type() override { return Type::func; }
+};
+
+extern "C" {
+    __declspec(dllexport) Operation* create_op() {
+        return new MathFunction();
+    }
 }
