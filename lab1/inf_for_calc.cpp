@@ -65,6 +65,7 @@ void Calc_Inf::load_lib()
                 std::function<double(double)> func = operation->get_pointer_un();
                 functions[name_func] = func;
             }
+            ptrs.push_back(operation);
         }
         else
             std::cerr << "Problem with opening dll";

@@ -6,13 +6,16 @@
 #include <Windows.h>
 #include <iostream>
 #include <vector>
-
+#include "operator.h"
 
 class Calc_Inf 
 {
 public:
     Calc_Inf(); 
-    ~Calc_Inf(){ for (const auto& lib : libs) { FreeLibrary(lib); } }
+    ~Calc_Inf(){ 
+        for (const auto& ptr : ptrs) { delete ptr; }
+        for (const auto& lib : libs) { FreeLibrary(lib); }
+    }
     std::map<char, int> set_op_priority() { return priority_op; }
     std::vector<std::string> set_func_names() { return functions_name; }
     std::map<char, std::function<double(double, double)>> set_operators() { return operators; }
@@ -27,4 +30,5 @@ private:
     std::map<char, std::function<double(double)>> unary_op;
     std::vector<std::string> functions_name;
     std::vector<HINSTANCE> libs;
+    std::vector<Operation*> ptrs;
 };
