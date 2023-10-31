@@ -18,7 +18,6 @@ public:
     void process(const std::function<void(const Node&)>& callback) const;
     std::string get_content() const { return content; }
     std::string get_tag() const { return tag; }
-    //std::vector<std::unique_ptr<Node>>& get_nodes() { return  nodes; }
 private:
     std::string tag;
     std::string content;
