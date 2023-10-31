@@ -21,6 +21,8 @@ int main() {
     resource.print();
     resource.erase(it1);
     resource.print();
-
+    auto it2 = resource.find("dvsd");
+    it2++;
+    std::cout << "Tag: " << (*it2).get_tag() << ", Content: " << (*it2).get_content() << std::endl;
 
 };

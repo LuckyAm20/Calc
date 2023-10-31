@@ -9,7 +9,9 @@ public:
     Iterator(Node* node) : current(node) {}
     Iterator() : current(nullptr) {}
     Node& operator*() const {
-        return *current;
+        if (current != nullptr)
+            return *current;
+        std::cerr << "Error";
     }
 
     Iterator& operator++();

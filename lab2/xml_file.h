@@ -34,7 +34,7 @@ public:
     void process(const std::function<void(const Node&)>& callback) const {
         root->process(callback);
     }
-    std::vector<std::unique_ptr<Node>>& getNodes() const {
+    std::vector<std::unique_ptr<Node>>& get_nodes() const {
         return root->get_nodes();
     }
     const std::unique_ptr<Node>& get_root() const {

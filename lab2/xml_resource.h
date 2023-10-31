@@ -26,16 +26,27 @@ public:
         return XML_Resource();
     }
 
-    void load(const std::string& filePath) {
-        file.load(filePath);
+    void load(const std::string& file_path) {
+        try {
+            file.load(file_path);
+        }
+        catch (const std::runtime_error& e) {
+            std::cerr << "Runtime error: " << e.what() << std::endl;
+        }
+        
     }
 
     void print() const {
         file.print();
     }
 
-    void save(const std::string& filePath) const {
-        file.save(filePath);
+    void save(const std::string& file_path) const {
+        try {
+            file.save(file_path);
+        }
+        catch (const std::runtime_error& e) {
+            std::cerr << "Runtime error: " << e.what() << std::endl;
+        }
     }
     
 };

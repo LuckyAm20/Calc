@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <functional>
+#include <iostream>
 
 class Node {
 public:

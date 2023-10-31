@@ -30,7 +30,7 @@ bool XML_Resource::erase(Iterator pos) {
         return false;
     }
 
-    auto& nodes = file.getNodes();
+    auto& nodes = file.get_nodes();
     for (auto it = nodes.begin(); it != nodes.end(); ++it) {
         if (it->get() == &(*pos)) {
             nodes.erase(it);
@@ -49,7 +49,7 @@ Iterator XML_Resource::add(Iterator pos, const std::string& tag, const std::stri
     Node* new_ptr = new_node.get();
 
     if (pos == end()) {
-        file.getNodes().push_back(std::move(new_node));
+        file.get_nodes().push_back(std::move(new_node));
     }
     else {
         (*pos).push(std::move(new_node));
