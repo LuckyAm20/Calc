@@ -16,4 +16,11 @@ int main() {
     ++it;
 
     std::cout << "Tag: " << (*it).get_tag() << ", Content: " << (*it).get_content() << std::endl;
+    auto it1 = resource.add(it, "chdsgdgdsg", "Content 6");
+    std::cout << "Tag: " << (*it1).get_tag() << ", Content: " << (*it1).get_content() << std::endl;
+    resource.print();
+    resource.erase(it1);
+    resource.print();
+
+
 };
