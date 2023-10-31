@@ -4,7 +4,8 @@
 #include <fstream>
 #include <functional>
 #include <iostream>
-
+class Iterator;
+class XML_Resource;
 class Node {
 public:
     Node(const std::string& tag, const std::string& content) : tag(tag), content(content) {}
@@ -17,9 +18,11 @@ public:
     void process(const std::function<void(const Node&)>& callback) const;
     std::string get_content() const { return content; }
     std::string get_tag() const { return tag; }
-    std::vector<std::unique_ptr<Node>>& get_nodes() { return  nodes; }
+    //std::vector<std::unique_ptr<Node>>& get_nodes() { return  nodes; }
 private:
     std::string tag;
     std::string content;
     std::vector<std::unique_ptr<Node>> nodes;
+    friend XML_Resource;
+    friend Iterator;
 };
