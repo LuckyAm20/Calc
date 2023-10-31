@@ -34,6 +34,12 @@ public:
     void process(const std::function<void(const Node&)>& callback) const {
         root->process(callback);
     }
+    std::vector<std::unique_ptr<Node>>& getNodes() const {
+        return root->get_nodes();
+    }
+    const std::unique_ptr<Node>& get_root() const {
+        return root;
+    }
 
 private:
     std::unique_ptr<Node> root;
@@ -48,4 +54,5 @@ private:
     std::string make_str() const {
         return root->make_str();
     }
+    
 };
