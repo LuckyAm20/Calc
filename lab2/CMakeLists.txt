@@ -11,7 +11,7 @@ endif()
 
 project ("lab2")
 
-add_executable (lab2 "main.cpp"  "node.cpp" "node.h" "xml_file.cpp" "xml_file.h" "xml_resource.cpp" "xml_resource.h" "iterator.cpp" "iterator.h")
+add_executable (lab2 "main.cpp"  "node_iter.cpp" "node_iter.h" "xml_file.cpp" "xml_file.h" "xml_resource.cpp" "xml_resource.h"  )
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/example.xml

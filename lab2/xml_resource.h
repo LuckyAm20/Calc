@@ -1,12 +1,11 @@
 #pragma once
 #include "xml_file.h"
-#include "iterator.h"
+
 
 class XML_Resource {
 private:
     XML_Resource() = default;
     XML_File file;
-    bool erase_recurs(std::vector<std::unique_ptr<Node>>& nodes, Iterator pos);
 public:
     Iterator begin() const {
         return Iterator(file.get_root().get());

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <algorithm>
 #include <functional>
-#include "node.h"
+#include "node_iter.h"
 
 class XML_File {
 public:
