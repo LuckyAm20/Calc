@@ -13,7 +13,6 @@ private:
 
 public:
     Iterator(Node* node) : current(node) {}
-    Iterator() : current(nullptr) {}
     Node& operator*() const {
         if (current != nullptr)
             return *current;
