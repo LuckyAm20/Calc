@@ -19,8 +19,11 @@ public:
         : obj(obj), func(func), originalArgs(args) {}
 
     void invoke(const std::unordered_map<std::string, int>& parameters) const {
-        auto updatedArgs = updateArguments(originalArgs, parameters);
-        auto argumentsTuple = getArgumentsTuple(updatedArgs, std::make_index_sequence<sizeof...(Args)>());
+        if (!validateArguments(parameters)) {
+            throw std::invalid_argument("Invalid arguments.");
+        }
+
+        auto argumentsTuple = getArgumentsTuple(parameters, std::make_index_sequence<sizeof...(Args)>());
 
         std::apply([this](auto&&... args) {
             (obj->*func)(std::forward<decltype(args)>(args)...);
@@ -30,26 +33,30 @@ public:
 private:
     template <std::size_t... Indices>
     auto getArgumentsTuple(const std::unordered_map<std::string, int>& args, std::index_sequence<Indices...>) const {
-        std::vector<int> argValues;
-        for (const auto& arg : args) {
-            argValues.push_back(arg.second);
-        }
-
-        return std::make_tuple(argValues[Indices]...);
-    }
-
-    std::unordered_map<std::string, int> updateArguments(const std::unordered_map<std::string, int>& originalArgs,
-        const std::unordered_map<std::string, int>& newArgs) const {
-        std::unordered_map<std::string, int> updatedArgs = originalArgs;
-
-        for (const auto& newArg : newArgs) {
-            auto it = updatedArgs.find(newArg.first);
-            if (it != updatedArgs.end()) {
-                it->second = newArg.second;
+        std::vector<std::pair<std::string, int>> argValues;
+        for (const auto& arg : originalArgs) {
+            auto it = args.find(arg.first);
+            if (it != args.end()) {
+                argValues.emplace_back(arg.first, it->second);
             }
         }
 
-        return updatedArgs;
+        return std::make_tuple(argValues[Indices].second...);
+    }
+
+    bool validateArguments(const std::unordered_map<std::string, int>& parameters) const {
+        if (parameters.size() != originalArgs.size()) {
+            return false;
+        }
+
+        for (const auto& arg : originalArgs) {
+            auto range = parameters.equal_range(arg.first);
+            if (std::distance(range.first, range.second) == 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     T* obj;
@@ -65,7 +72,12 @@ public:
     template <typename T, typename... Args>
     void register_command(Wrapper<T, Args...>* wrapper, const std::string& command) {
         commands[command] = [wrapper](const std::unordered_map<std::string, int>& parameters) {
-            wrapper->invoke(parameters);
+            try {
+                wrapper->invoke(parameters);
+            }
+            catch (const std::invalid_argument& e) {
+                std::cerr << "Error: " << e.what() << std::endl;
+            }
             };
     }
 
@@ -76,7 +88,7 @@ public:
             return 0;
         }
         else {
-            std::cerr << "Ошибка: Команда не найдена." << std::endl;
+            std::cerr << "Error: The command was not found." << std::endl;
             return -1;
         }
     }
@@ -93,7 +105,7 @@ int main() {
     engine.register_command(&wrapper, "command1");
 
     std::cout << engine.execute("command1", { {"arg2", 4} }) << std::endl;
-    std::cout << engine.execute("command1", { {"arg1", 867}, {"arg2", 9} }) << std::endl;
+    std::cout << engine.execute("command1", { {"arg2", 867}, {"arg1", 9} }) << std::endl;
 
 }
 
