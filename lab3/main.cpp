@@ -7,27 +7,30 @@
 
 class Subject {
 public:
-    void f3(int arg1, int arg2) {
-        std::cout << "f3 called with arg1: " << arg1 << ", arg2: " << arg2 << std::endl;
+    int f3(int arg1, int arg2) {
+        return arg2 - arg1;
     }
 };
 
 template <typename T, typename... Args>
 class Wrapper {
 public:
-    Wrapper(T* obj, void (T::* func)(Args...), const std::unordered_map<std::string, int>& args)
+    Wrapper(T* obj, int (T::* func)(Args...), const std::unordered_map<std::string, int>& args)
         : obj(obj), func(func), originalArgs(args) {}
 
-    void invoke(const std::unordered_map<std::string, int>& parameters) const {
+    int invoke(const std::unordered_map<std::string, int>& parameters) const {
         if (!validateArguments(parameters)) {
             throw std::invalid_argument("Invalid arguments.");
         }
 
         auto argumentsTuple = getArgumentsTuple(parameters, std::make_index_sequence<sizeof...(Args)>());
 
-        std::apply([this](auto&&... args) {
-            (obj->*func)(std::forward<decltype(args)>(args)...);
+        int result = 0;
+        std::apply([&result, this](auto&&... args) {
+            result = (obj->*func)(std::forward<decltype(args)>(args)...);
             }, argumentsTuple);
+
+        return result;
     }
 
 private:
@@ -60,7 +63,7 @@ private:
     }
 
     T* obj;
-    void (T::* func)(Args...);
+    int (T::* func)(Args...);
     std::unordered_map<std::string, int> originalArgs;
 };
 
@@ -73,10 +76,11 @@ public:
     void register_command(Wrapper<T, Args...>* wrapper, const std::string& command) {
         commands[command] = [wrapper](const std::unordered_map<std::string, int>& parameters) {
             try {
-                wrapper->invoke(parameters);
+                return wrapper->invoke(parameters);
             }
             catch (const std::invalid_argument& e) {
-                std::cerr << "Error: " << e.what() << std::endl;
+                std::cerr << "Error: " << e.what() << " Code: ";
+                return -1;
             }
             };
     }
@@ -84,17 +88,16 @@ public:
     int execute(const std::string& command, const std::unordered_map<std::string, int>& parameters) {
         auto it = commands.find(command);
         if (it != commands.end()) {
-            it->second(parameters);
-            return 0;
+            return it->second(parameters);
         }
         else {
-            std::cerr << "Error: The command was not found." << std::endl;
+            std::cerr << "Error: The command was not found. Code: ";
             return -1;
         }
     }
 
 private:
-    std::unordered_map<std::string, std::function<void(const std::unordered_map<std::string, int>&)>> commands;
+    std::unordered_map<std::string, std::function<int(const std::unordered_map<std::string, int>&)>> commands;
 };
 
 int main() {
@@ -108,15 +111,3 @@ int main() {
     std::cout << engine.execute("command1", { {"arg2", 867}, {"arg1", 9} }) << std::endl;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
