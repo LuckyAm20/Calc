@@ -1,5 +1,6 @@
 #pragma once
 #include "Wrapper.h"
+#include <unordered_set>
 
 class Engine {
 public:
@@ -16,10 +17,17 @@ public:
             };
     }
 
-    int execute(const std::string& command, const std::unordered_map<std::string, int>& parameters) {
+    int execute(const std::string& command, const std::unordered_multimap<std::string, int>& parameters) {
+        if (hasDuplicateKeys(parameters)) {
+            std::cerr << "Error: Duplicate keys Code: ";
+            return -1;
+        }
+
+        std::unordered_map<std::string, int> procParameters(parameters.begin(), parameters.end());
+        
         auto it = commands.find(command);
         if (it != commands.end()) {
-            return it->second(parameters);
+            return it->second(procParameters);
         }
         else {
             std::cerr << "Error: The command was not found. Code: ";
@@ -28,5 +36,18 @@ public:
     }
 
 private:
+    bool hasDuplicateKeys(const std::unordered_multimap<std::string, int>& parameters) const {
+        std::unordered_set<std::string> uniqueKeys;
+
+        for (const auto& pair : parameters) {
+
+            if (!uniqueKeys.insert(pair.first).second) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     std::unordered_map<std::string, std::function<int(const std::unordered_map<std::string, int>&)>> commands;
 };

@@ -51,7 +51,13 @@ int main() {
     std::cout << "A call for a wrapper that is incorrectly initialized\n(the number of arguments passed does not correspond to the number of arguments accepted by the function)" << std::endl;
     std::cout << engine.execute("command4", { {"arg1", 4} }) << std::endl;
     std::cout << engine.execute("command4", { {"arg1", 43}, {"arg2", 5}}) << std::endl;
-    std::cout << "That's right. an error is returned for any passed parameters" << std::endl;
+    std::cout << "That's right. an error is returned for any passed parameters" << std::endl << std::endl;
+
+    std::cout << "Test7" << std::endl;
+    std::cout << "Calling a function with duplicate argument names" << std::endl;
+    std::cout << engine.execute("command1", { {"arg1", 4}, {"arg1", 4} }) << std::endl;
+    std::cout << engine.execute("command1", { {"arg1", 43}, {"arg2", 5}, {"arg1", 4} }) << std::endl;
+    std::cout << "That's right. an error is displayed because the names of the argumets are repeated" << std::endl;
 
 
 }
