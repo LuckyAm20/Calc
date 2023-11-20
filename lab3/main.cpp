@@ -8,10 +8,12 @@ int main() {
     Wrapper wrapper(&subj, &Subject::f3, { {"arg1", 0}, {"arg2", 0} });
     Wrapper wrapper1(&subj, &Subject::f4, { {"arg1", 0}});
     Wrapper wrapper2(&subj, &Subject::f5, { {"arg1", 0}, {"arg2", 0}, {"arg3", 0} , {"arg4", 0}});
+    Wrapper wrapper3(&subj, &Subject::f4, { {"arg1", 0}, {"arg2", 0} });
     Engine engine;
     engine.register_command(&wrapper, "command1");
     engine.register_command(&wrapper1, "command2");
     engine.register_command(&wrapper2, "command3");
+    engine.register_command(&wrapper3, "command4");
 
     std::cout << "Test1" << std::endl;
     std::cout << "Passing arguments in different order" << std::endl;
@@ -43,6 +45,13 @@ int main() {
     std::cout << engine.execute("command2", { {"arg1", 4} }) << std::endl;
     std::cout << engine.execute("command3", { {"arg1", 43}, {"arg2", 5}, {"arg3", 1} , {"arg4", 8} }) << std::endl;
     std::cout << "That's right" << std::endl << std::endl;
+
+
+    std::cout << "Test6" << std::endl;
+    std::cout << "A call for a wrapper that is incorrectly initialized\n(the number of arguments passed does not correspond to the number of arguments accepted by the function)" << std::endl;
+    std::cout << engine.execute("command4", { {"arg1", 4} }) << std::endl;
+    std::cout << engine.execute("command4", { {"arg1", 43}, {"arg2", 5}}) << std::endl;
+    std::cout << "That's right. an error is returned for any passed parameters" << std::endl;
 
 
 }

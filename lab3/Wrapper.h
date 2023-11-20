@@ -12,6 +12,11 @@ public:
         : obj(obj), func(func), initializationArgs(args) {}
 
     int invoke(const std::unordered_map<std::string, int>& parameters) const {
+
+        if (getArgumentCount() != parameters.size()) {
+            throw std::invalid_argument("Invalid number of arguments.");
+        }
+
         if (!validateArguments(parameters)) {
             throw std::invalid_argument("Invalid arguments.");
         }
@@ -53,6 +58,10 @@ private:
         }
 
         return true;
+    }
+
+    constexpr std::size_t getArgumentCount() const {
+        return sizeof...(Args);
     }
 
     T* obj;
